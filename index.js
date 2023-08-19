@@ -13,20 +13,27 @@ const fs = require('fs');
 const app = express();
 app.use(express.json());
 
+cnamCache = {};
+
 app.post('/sms', async (req, res) => {
 	data = req.body;
 	// Get the CNAM record for the number
-	cnam = data.From;
-	await axios.get(`https://cnam.bulkvs.com/?id=${config.bulkvs.id}&did=${data.From}&format=json`, {
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	}).then(function (response) {
-		cnam = response.data.name;
+	if (cnamCache[data.From]) {
+		cnam = cnamCache[data.From];
+	} else {
+		cnam = data.From;
+		await axios.get(`https://cnam.bulkvs.com/?id=${config.bulkvs.id}&did=${data.From}&format=json`, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function (response) {
+			cnam = response.data.name;
 
-	}).catch(function (error) {
-		console.log(error);
-	});
+		}).catch(function (error) {
+			console.log(error);
+		});
+		cnamCache[data.From] = cnam;
+	}
 	if (data.MediaURLs) { // It's an MMS
 		out = {
 			"text": "",
