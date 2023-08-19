@@ -61,6 +61,7 @@ app.post('/sms', async (req, res) => {
 				}
 			}
 		})();
+		if (!out['text'] && !out['images']) return res.send("OK");
 		hook.send({
 			content: out['text'],
 			files: out['images'],
