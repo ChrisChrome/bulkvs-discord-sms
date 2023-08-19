@@ -54,48 +54,11 @@ app.post('/sms', async (req, res) => {
 						console.log(error);
 					})
 				} // Check for jpg and jpeg files
-				else if (data.MediaURLs[i].includes(".jpg") || data.MediaURLs[i].includes(".jpeg") || data.MediaURLs[i].includes(".png") || data.MediaURLs[i].includes(".gif")) {
+				else if (data.MediaURLs[i].includes(".jpg") || data.MediaURLs[i].includes(".jpeg") || data.MediaURLs[i].includes(".png") || data.MediaURLs[i].includes(".gif") || data.MediaURLs[i].includes(".3gp")) {
 					// get file name from URL
 					filename = data.MediaURLs[i].split("/").pop();
 					out['images'].push({ name: filename, attachment: data.MediaURLs[i] });
-				} else if (data.MediaURLs[i].includes(".3gp")) { // Weird file format, convert it to mp4
-					await (async () => {
-						// get file name from URL
-						filename = data.MediaURLs[i].split("/").pop();
-						// Download the file
-						await axios.get(data.MediaURLs[i], {
-							responseType: 'arraybuffer'
-						}).then(function (response) {
-							fs.writeFileSync(filename, Buffer.from(response.data));
-						}
-						).catch(function (error) {
-							console.log(error);
-						}
-						)
-						// Convert the file to mp4
-						try {
-							var process = new ffmpeg(filename);
-							process.then(function (video) {
-								// now save the new file
-								// Cut out ext from old filename
-								filename = filename.split(".")[0];
-								video.save(`${filename}.mp4`, function (error, file) {
-									if (!error) console.log('Video file: ' + file);
-									// Delete the old file, then push the new one to the array
-									fs.unlinkSync(`${filename}.3gp`);
-									out['images'].push({ name: `${filename}.mp4`, attachment: `${filename}.mp4` });
-								});
-							}, function (err) {
-								console.log('Error: ' + err);
-							});
-						}
-						catch (e) {
-							console.log(e.code);
-							console.log(e.msg);
-						}
-					})();
 				}
-
 			}
 		})();
 		hook.send({
