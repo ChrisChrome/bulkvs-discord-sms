@@ -71,5 +71,5 @@ app.post('/sms', async (req, res) => {
 });
 
 app.listen(config.port, () => {
-	console.log(`Listening on port ${port}`);
+	console.log(`Listening on port ${config.port}`);
 });
