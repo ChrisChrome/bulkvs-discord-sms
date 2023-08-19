@@ -54,7 +54,7 @@ app.post('/sms', async (req, res) => {
 						console.log(error);
 					})
 				} // Check for jpg and jpeg files
-				else if (data.MediaURLs[i].includes(".jpg") || data.MediaURLs[i].includes(".jpeg") || data.MediaURLs[i].includes(".png") || data.MediaURLs[i].includes(".gif") || data.MediaURLs[i].includes(".3gp")) {
+				else if (data.MediaURLs[i].includes(".jpg") || data.MediaURLs[i].includes(".jpeg") || data.MediaURLs[i].includes(".png") || data.MediaURLs[i].includes(".gif")) {
 					// get file name from URL
 					filename = data.MediaURLs[i].split("/").pop();
 					out['images'].push({ name: filename, attachment: data.MediaURLs[i] });
