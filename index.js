@@ -88,6 +88,12 @@ app.post('/sms', async (req, res) => {
 							console.log('Error: ' + err);
 						});
 					}
+					catch (e) {
+						console.log(e.code);
+						console.log(e.msg);
+					}
+				}
+
 			}
 			})();
 		hook.send({
