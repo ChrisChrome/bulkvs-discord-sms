@@ -11,7 +11,6 @@ const hook = new Discord.WebhookClient({ url: config.webhook }, {
 });
 const fs = require('fs');
 const app = express();
-const port = 3000;
 app.use(express.json());
 
 app.post('/sms', async (req, res) => {
@@ -71,6 +70,6 @@ app.post('/sms', async (req, res) => {
 	res.send("OK");
 });
 
-app.listen(port, () => {
+app.listen(config.port, () => {
 	console.log(`Listening on port ${port}`);
 });
