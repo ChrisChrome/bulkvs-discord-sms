@@ -65,7 +65,7 @@ app.post('/sms', async (req, res) => {
 			content: out['text'],
 			files: out['images'],
 			username: cnam,
-			avatarURL: `https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`
+			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`)
 		})
 	} else { // It's an SMS
 		data.Message = data.Message.replaceAll("+", " ");
@@ -73,7 +73,7 @@ app.post('/sms', async (req, res) => {
 		hook.send({
 			content: data.Message,
 			username: cnam,
-			avatarURL: `https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`
+			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`)
 		})
 	}
 	res.send("OK");
