@@ -64,14 +64,16 @@ app.post('/sms', async (req, res) => {
 		hook.send({
 			content: out['text'],
 			files: out['images'],
-			username: cnam
+			username: cnam,
+			avatarURL: `https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`
 		})
 	} else { // It's an SMS
 		data.Message = data.Message.replaceAll("+", " ");
 		data.Message = decodeURIComponent(data.Message);
 		hook.send({
 			content: data.Message,
-			username: cnam
+			username: cnam,
+			avatarURL: `https://tiley.herokuapp.com/avatar/${cnam}/${cnam}.png?s=500`
 		})
 	}
 	res.send("OK");
