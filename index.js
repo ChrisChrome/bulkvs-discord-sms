@@ -9,6 +9,11 @@ const hook = new Discord.WebhookClient({ url: config.webhook }, {
 		parse: []
 	}
 });
+const modhook = new Discord.WebhookClient({ url: config.modwebhook }, {
+	allowedMentions: {
+		parse: []
+	}
+});
 const fs = require('fs');
 const app = express();
 app.use(express.json());
@@ -68,12 +73,23 @@ app.post('/sms', async (req, res) => {
 			username: "MMS",
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
+		modhook.send({
+			content: out['text'],
+			files: out['images'],
+			username: `MMS from ${cnam} (${data.From})`,
+			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
+		})
 	} else { // It's an SMS
 		data.Message = data.Message.replaceAll("+", " ");
 		data.Message = decodeURIComponent(data.Message);
 		hook.send({
 			content: data.Message,
 			username: "SMS",
+			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
+		})
+		modhook.send({
+			content: data.Message,
+			username: `SMS from ${cnam} (${data.From})`,
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
 	}
