@@ -1,5 +1,6 @@
 // a simple express server that takes any URL and console logs it
 const config = require('./config.json');
+const phone = require("phone").phone;
 const express = require('express');
 const axios = require('axios');
 const Discord = require('discord.js');
@@ -70,13 +71,13 @@ app.post('/sms', async (req, res) => {
 		hook.send({
 			content: out['text'],
 			files: out['images'],
-			username: "MMS",
+			username: `MMS [${phone(`+${data.From}`).countryIso3}]`,
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
 		modhook.send({
 			content: out['text'],
 			files: out['images'],
-			username: `MMS from ${cnam} (${data.From})`,
+			username: `MMS from ${cnam} (${data.From}) [${phone(`+${data.From}`).countryIso3}]`,
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
 	} else { // It's an SMS
@@ -84,12 +85,12 @@ app.post('/sms', async (req, res) => {
 		data.Message = decodeURIComponent(data.Message);
 		hook.send({
 			content: data.Message,
-			username: "SMS",
+			username: `SMS [${phone(`+${data.From}`).countryIso3}]`,
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
 		modhook.send({
 			content: data.Message,
-			username: `SMS from ${cnam} (${data.From})`,
+			username: `SMS from ${cnam} (${data.From}) [${phone(`+${data.From}`).countryIso3}]`,
 			avatarURL: encodeURI(`https://tiley.herokuapp.com/avatar/${cnam.replaceAll(" ", "")}/${cnam.replaceAll(" ", "")}.png?s=500`)
 		})
 	}
